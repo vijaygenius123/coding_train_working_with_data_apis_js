@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workking With Data & API</title>
+</head>
+
+<body>
+    <img id="rainbow" height="320px" />
+
+
+    <script type="text/javascript">
+
+        async function catchRainbow() {
+            const response = await fetch('./rainbow.jpeg');
+            const img = await response.blob();
+            document.getElementById('rainbow').src = URL.createObjectURL(img)
+        }
+
+        catchRainbow()
+            .then(response => {
+                console.log("Displaying Rainbow")
+            })
+            .catch(err => console.log(err));
+
+    </script>
+</body>
+
+</html>
