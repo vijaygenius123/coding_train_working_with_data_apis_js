@@ -19,20 +19,26 @@
     <script type="text/javascript">
 
         const ctx = document.getElementById('myChart').getContext('2d');
-        const xLabels = []
-        const yData = []
-
         async function chartIt() {
-            await getData();
+            const data = await getData();
             var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: xLabels,
+                    labels: data.x,
                     datasets: [{
-                        label: 'Global Average Temprature',
-                        data: yData,
+                        label: 'Temprature',
+                        data: data.y1,
+                        fill: false,
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Global Average Temprature',
+                        data: data.y2,
+                        fill: false,
+                        backgroundColor: 'rgba(99, 255, 132, 0.2)',
+                        borderColor: 'rgba(99, 255, 132, 1)',
                         borderWidth: 1
                     }]
                 }
@@ -40,17 +46,23 @@
         }
 
         async function getData() {
+            const x = []
+            const y1 = []
+            const y2 = []
             const response = await fetch('./ZonAnn.Ts+dSST.csv');
             const data = await response.text();
             const table = data.split('\n').slice(1);
             table.forEach(row => {
                 const cols = row.split(',');
                 const year = cols[0];
-                const temp = parseFloat(cols[1]);
-                xLabels.push(year);
-                yData.push(temp + 14);
-                console.log(year, temp);
+                const temp1 = parseFloat(cols[1]);
+                const temp2 = parseFloat(cols[2]);
+                x.push(year);
+                y1.push(temp1 + 14);
+                y2.push(temp1 + 15);
+                console.log(year, temp1, temp2);
             })
+            return { x, y1, y2 }
         }
 
         chartIt()
