@@ -9,6 +9,11 @@
 
 <body>
 
+    <h1>Where Is The ISS?</h1>
+    <p>
+        latitude: <span id="lat"></span> <br />
+        longtude: <span id="long"></span>
+    </p>
 
     <script>
         const api_url = 'https://api.wheretheiss.at/v1/satellites/25544';
@@ -17,6 +22,11 @@
             const response = await fetch(api_url);
             const data = await response.json();
             console.log(data)
+
+            const { latitude, longitude } = data;
+
+            document.getElementById('lat').textContent = latitude
+            document.getElementById('long').textContent = longitude
         }
 
         getISS();
